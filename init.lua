@@ -254,6 +254,14 @@ do
   vim.keymap.set('n', '<leader>n', vim.cmd.bn, { desc = 'Next buffer' })
   vim.keymap.set('n', '<leader>b', vim.cmd.bp, { desc = 'Previous buffer' })
   vim.keymap.set('n', '<leader>x', vim.cmd.bd, { desc = 'Close buffer' })
+
+  vim.keymap.set("n", "<leader>(", 'ciw(<C-r>")<Esc>', { desc = "Surround with ()" })
+  vim.keymap.set("n", "<leader>{", 'ciw{<C-r>"}<Esc>', { desc = "Surround with {}" })
+  vim.keymap.set("n", "<leader>[", 'ciw[<C-r>"]<Esc>', { desc = "Surround with []" })
+  vim.keymap.set("n", "<leader><", 'ciw<<C-r>"><Esc>', { desc = "Surround with <>" })
+  vim.keymap.set("n", '<leader>"', 'ciw"<C-r>""<Esc>', { desc = 'Surround with ""' })
+  vim.keymap.set("n", "<leader>'", "ciw'<C-r>\"'<Esc>", { desc = "Surround with ''" })
+  vim.keymap.set("n", "<leader>`", 'ciw`<C-r>"`<Esc>', { desc = "Surround with ``" })
 end
 
 -- ============================================================
