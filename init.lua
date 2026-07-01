@@ -190,7 +190,7 @@ do
   vim.diagnostic.config {
     update_in_insert = false,
     severity_sort = true,
-    float = { border = 'rounded', source = 'if_many' },
+    float = { border = 'rounded', source = 'if_many'},
     underline = { severity = { min = vim.diagnostic.severity.WARN } },
 
     -- Can switch between these as you prefer
@@ -209,7 +209,7 @@ do
     },
   }
 
-  vim.keymap.set('n', '<leader>q', vim.diagnostic.setloclist, { desc = 'Open diagnostic [Q]uickfix list' })
+  vim.keymap.set('n', '<leader>d', vim.diagnostic.setloclist, { desc = 'Open [D]iagnostic' })
 
   -- Exit terminal mode in the builtin terminal with a shortcut that is a bit easier
   -- for people to discover. Otherwise, you normally need to press <C-\><C-n>, which
@@ -354,6 +354,10 @@ do
   --
   -- We first install it from https://github.com/NMAC427/guess-indent.nvim
   -- and then call its `setup()` function to start it with default settings.
+  -- [[ Auto-close pairs plugin ]]
+  vim.pack.add { 'https://github.com/windwp/nvim-autopairs' }
+  require('nvim-autopairs').setup {}
+
   vim.pack.add { gh 'NMAC427/guess-indent.nvim' }
   require('guess-indent').setup {}
 
@@ -387,24 +391,53 @@ do
     },
   }
 
-  -- [[ Colorscheme ]]
-  -- You can easily change to a different colorscheme.
-  -- Change the name of the colorscheme plugin below, and then
-  -- change the command under that to load whatever the name of that colorscheme is.
-  --
-  -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
-  vim.pack.add { gh 'folke/tokyonight.nvim' }
-  ---@diagnostic disable-next-line: missing-fields
-  require('tokyonight').setup {
-    styles = {
-      comments = { italic = false }, -- Disable italics in comments
-    },
-  }
+  -- [[ Colorscheme Configuration ]]
+  -- Options: 'tokyonight', 'solarized', 'catppuccin', 'everforest', 'kanagawa'
+  local active_theme = 'tokyonight'
 
-  -- Load the colorscheme here.
-  -- Like many other themes, this one has different styles, and you could load
-  -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-  vim.cmd.colorscheme 'tokyonight-night'
+  -- 1. Install and configure the chosen plugin
+  if active_theme == 'tokyonight' then
+    vim.pack.add { gh 'folke/tokyonight.nvim' }
+    ---@diagnostic disable-next-line: missing-fields
+    require('tokyonight').setup {
+      styles = { comments = { italic = false } },
+    }
+    vim.cmd.colorscheme 'tokyonight-night'
+
+  elseif active_theme == 'solarized' then
+    vim.pack.add { gh 'maxmx03/solarized.nvim' }
+    ---@diagnostic disable-next-line: missing-fields
+    require('solarized').setup {
+      styles = { comments = { italic = false } },
+    }
+    vim.o.background = 'dark' -- Options: 'dark' or 'light'
+    vim.cmd.colorscheme 'solarized'
+
+  elseif active_theme == 'catppuccin' then
+    vim.pack.add { gh 'catppuccin/nvim' }
+    ---@diagnostic disable-next-line: missing-fields
+    require('catppuccin').setup {
+      no_italic = true,
+      styles = { comments = {} },
+    }
+  -- Variants: catppuccin-macchiato (warm purple-grey), catppuccin-mocha (darker pastel)
+    vim.cmd.colorscheme 'catppuccin-mocha'
+
+  elseif active_theme == 'everforest' then
+    vim.pack.add { gh 'sainnhe/everforest' }
+    -- Configuration globals must be set BEFORE loading the colorscheme
+    vim.g.everforest_background = 'hard' -- Options: 'hard', 'medium', 'soft'
+    vim.g.everforest_enable_italic = 0     -- Disable italics
+    vim.cmd.colorscheme 'everforest'
+
+  elseif active_theme == 'kanagawa' then
+    vim.pack.add { gh 'rebelot/kanagawa.nvim' }
+    ---@diagnostic disable-next-line: missing-fields
+    require('kanagawa').setup {
+      commentStyle = { italic = false }, -- Disable italics in comments
+    }
+    vim.cmd.colorscheme 'kanagawa-dragon' -- Variants: kanagawa-wave, kanagawa-dragon
+  end
 
   -- Highlight todo, notes, etc in comments
   vim.pack.add { gh 'folke/todo-comments.nvim' }
